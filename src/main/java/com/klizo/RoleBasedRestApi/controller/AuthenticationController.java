@@ -9,6 +9,8 @@ import com.klizo.RoleBasedRestApi.model.AuthenticationResponse;
 import com.klizo.RoleBasedRestApi.model.User;
 import com.klizo.RoleBasedRestApi.service.AuthenticationService;
 
+import jakarta.validation.Valid;
+
 @RestController
 public class AuthenticationController {
 
@@ -20,7 +22,7 @@ public class AuthenticationController {
 
 	@PostMapping("/register")
 	public ResponseEntity<AuthenticationResponse> register(
-			@RequestBody User request
+			@Valid @RequestBody User request
 			) {
 		
 		return ResponseEntity.ok(authService.register(request));
@@ -29,7 +31,7 @@ public class AuthenticationController {
 	
 	@PostMapping("/login")
 	public ResponseEntity<AuthenticationResponse> login(
-			@RequestBody User request
+			@Valid @RequestBody User request
 			) {
 		
 		return ResponseEntity.ok(authService.authenticate(request));

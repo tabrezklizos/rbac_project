@@ -14,20 +14,17 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import com.klizo.RoleBasedRestApi.filter.JwtAuthenticationFilter;
-import com.klizo.RoleBasedRestApi.service.UserDetailsServiceImp;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
 
-	private final UserDetailsServiceImp userDetailsServiceImp;
 	
 	private final JwtAuthenticationFilter jwtAuthenticationFilter;
 	
 	
 	
-	public SecurityConfig(UserDetailsServiceImp userDetailsServiceImp, JwtAuthenticationFilter jwtAuthenticationFilter) {
-		this.userDetailsServiceImp = userDetailsServiceImp;
+	public SecurityConfig(JwtAuthenticationFilter jwtAuthenticationFilter) {
 		this.jwtAuthenticationFilter = jwtAuthenticationFilter;
 	}
 
@@ -38,8 +35,8 @@ public class SecurityConfig {
 	            .csrf(AbstractHttpConfigurer::disable)
 	            .authorizeHttpRequests(req -> req
 	                    .requestMatchers("/register", "/login").permitAll() 
-	                    .requestMatchers("/admin/**").hasRole("ADMIN") 
-	                    .requestMatchers("/super-admin/**").hasRole("SUPER_ADMIN")
+	                    .requestMatchers("/admin/**").hasAuthority("ADMIN") 
+	                    .requestMatchers("/super-admin/**").hasAuthority("SUPER_ADMIN")
 	                    .anyRequest().authenticated()
 	            )
 	            .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // Stateless session

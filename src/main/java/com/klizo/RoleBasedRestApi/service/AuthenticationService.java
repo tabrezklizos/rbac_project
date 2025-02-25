@@ -8,6 +8,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.klizo.RoleBasedRestApi.model.AuthenticationResponse;
+import com.klizo.RoleBasedRestApi.model.Role;
 import com.klizo.RoleBasedRestApi.model.User;
 import com.klizo.RoleBasedRestApi.repository.UserRepository;
 
@@ -37,7 +38,7 @@ public class AuthenticationService {
     	user.setUsername(request.getUsername());
     	user.setPassword(passwordEncoder.encode(request.getPassword()));
     	
-    	user.setRole(request.getRole());
+    	user.setRole(Role.USER);
     	
     	user=repository.save(user);
     	
