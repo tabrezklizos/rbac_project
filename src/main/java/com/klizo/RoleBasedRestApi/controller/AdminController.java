@@ -1,7 +1,8 @@
 package com.klizo.RoleBasedRestApi.controller;
 
+import com.klizo.RoleBasedRestApi.dto.UserDto;
 import com.klizo.RoleBasedRestApi.model.User;
-import com.klizo.RoleBasedRestApi.service.AdminService;
+import com.klizo.RoleBasedRestApi.service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -10,38 +11,27 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/admin")
-@PreAuthorize("hasRole('ADMIN')") // ✅ Only ADMIN can access these endpoints
+@PreAuthorize("hasAuthority('ADMIN')") 
 public class AdminController {
 
-    private final AdminService adminService;
+    private final UserService userService;
 
-    public AdminController(AdminService adminService) {
-        this.adminService = adminService;
-    }
-
-    @PostMapping("/create")
-    public ResponseEntity<User> createUser(@RequestBody User user) {
-        return ResponseEntity.ok(adminService.createUser(user));
+    public AdminController(UserService userService) {
+        this.userService = userService;
     }
 
     @GetMapping("/users")
-    public ResponseEntity<List<User>> getAllUsers() {
-        return ResponseEntity.ok(adminService.getAllUsers());
+    public ResponseEntity<List<UserDto>> getAllUsers() {
+        return ResponseEntity.ok(userService.getAllUsers());
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<User> getUserById(@PathVariable Integer id) {
-        return ResponseEntity.ok(adminService.getUserById(id));
+    @GetMapping("/user/{id}")
+    public ResponseEntity<UserDto> getUserById(@PathVariable Integer id) {
+        return ResponseEntity.ok(userService.getUserById(id));
     }
 
-    @PutMapping("/update/{id}")
-    public ResponseEntity<User> updateUser(@PathVariable Integer id, @RequestBody User user) {
-        return ResponseEntity.ok(adminService.updateUser(id, user));
-    }
-
-    @DeleteMapping("/delete/{id}")
-    public ResponseEntity<String> deleteUser(@PathVariable Integer id) {
-        adminService.deleteUser(id);
-        return ResponseEntity.ok("User deleted successfully.");
+    @PostMapping("/create-user")
+    public ResponseEntity<UserDto> createUser(@RequestBody User user) {
+        return ResponseEntity.ok(userService.createUser(user));
     }
 }
