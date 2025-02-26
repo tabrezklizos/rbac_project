@@ -12,13 +12,6 @@ This project is a **Java-based REST API** built with **Spring Boot**, providing 
 - **Security:** Spring Security (with JWT authentication)  
 - **Database:** MySQL  
 - **Build Tool:** Maven
-- **IDE:** Eclipse
-
-## 🏗️ Project Setup  
-### 1️⃣ Clone the Repository  
-```sh
-git clone https://github.com/tabrezklizos/rbac_project.git
-cd your-repo
 
 ## ⚙️ Features  
 ### ✅ User Authentication  
@@ -36,6 +29,12 @@ cd your-repo
 - **User:** Can only access their own profile.  
 
 ## 📖 API Endpoints  
+### 🔹 Authentication APIs  
+| Method | Endpoint | Description |
+|--------|---------|-------------|
+| `POST` | `/register` | Register a new user |
+| `POST` | `/login` | Authenticate user & return JWT token |
+
 ### 🔹 User-Specific APIs (`/user`)  
 | Method | Endpoint | Description |
 |--------|---------|-------------|
@@ -56,3 +55,12 @@ cd your-repo
 | `POST` | `/super-admin/create-user` | Create a new user |
 | `PUT`  | `/super-admin/update-user/{id}` | Update a user |
 | `DELETE` | `/super-admin/delete-user/{id}` | Delete a user |
+
+
+## 🏗️ Project Setup  
+### 1️⃣ Clone the Repository  
+```sh
+git clone https://github.com/tabrezklizos/rbac_project.git
+cd your-repo
+
+
