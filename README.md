@@ -58,6 +58,73 @@ This project is a **Java-based REST API** built with **Spring Boot**, providing 
 
 
 ## 🏗️ Project Setup  
+
+### 📥 Import Project into Eclipse  
+1. Open **Eclipse IDE**  
+2. Click on **File** → **Import**  
+3. Select **Maven** → **Existing Maven Projects**  
+4. Click **Next**  
+5. Browse to the cloned project directory and click **Finish**  
+
+### 🛠️ Configure MySQL Database  
+
+1. **Start MySQL Server**  
+   Ensure MySQL is installed and running on your machine.  
+
+2. **Create a New Database**  
+   Open MySQL CLI or any database client (e.g., MySQL Workbench) and run:  
+   ```sql
+   CREATE DATABASE your_database;
+
+### 🛠️ Configure application properties  
+# Database Configuration  
+spring.datasource.url=jdbc:mysql://localhost:3306/your_database
+spring.datasource.username=root
+spring.datasource.password=your_password
+spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver  
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.database-platform=org.hibernate.dialect.MySQL8Dialect
+
+# Server Configuration  
+server.port=8080
+
+### 🛠️ check pom.xml added dependencies 
+<dependencies>
+    <!-- Spring Boot Starter Web -->
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-web</artifactId>
+    </dependency>
+
+    <!-- Spring Boot Starter Security -->
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-security</artifactId>
+    </dependency>
+
+    <!-- Spring Boot Starter Data JPA -->
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-data-jpa</artifactId>
+    </dependency>
+
+    <!-- MySQL Driver -->
+    <dependency>
+        <groupId>mysql</groupId>
+        <artifactId>mysql-connector-java</artifactId>
+    </dependency>
+
+    <!-- JWT Authentication -->
+    <dependency>
+        <groupId>io.jsonwebtoken</groupId>
+        <artifactId>jjwt</artifactId>
+        <version>0.11.5</version>
+    </dependency>
+
+   
+
+
+
 ### 1️⃣ Clone the Repository  
 ```sh
 git clone https://github.com/tabrezklizos/rbac_project.git
