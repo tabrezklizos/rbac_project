@@ -2,6 +2,7 @@ package com.klizo.RoleBasedRestApi.service;
 
 import com.klizo.RoleBasedRestApi.dto.UserDto;
 import com.klizo.RoleBasedRestApi.exception.InvalidRoleException;
+import com.klizo.RoleBasedRestApi.exception.UserExistException;
 import com.klizo.RoleBasedRestApi.exception.UserNotFoundException;
 import com.klizo.RoleBasedRestApi.model.User;
 import com.klizo.RoleBasedRestApi.repository.UserRepository;
@@ -40,7 +41,11 @@ public class UserService {
     }
 
     public UserDto createUser(User user) {
-    
+
+        if(getUserProfile(user.getUsername())!=null){
+            throw new UserExistException("Already user existed with username");
+        }
+
     	  if (user.getRole().name().equals("SUPER_ADMIN")) {
     	        throw new InvalidRoleException("Admins are not allowed to create Super Admins.");
     	    }
