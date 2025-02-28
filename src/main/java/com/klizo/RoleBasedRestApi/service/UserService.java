@@ -9,6 +9,9 @@ import com.klizo.RoleBasedRestApi.repository.UserRepository;
 
 import java.util.List;
 
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -23,23 +26,25 @@ public class UserService {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
     }
-    
-    public UserDto getUserById(Integer id) {    	
-        User user = userRepository.findById(id)
-                .orElseThrow(() ->new UserNotFoundException("User with ID " + id + " not found"));
+
+   @Cacheable(value = "userValue",key="#userId")
+    public UserDto getUserById(Integer userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() ->new UserNotFoundException("User with ID " + userId + " not found"));
         return convertToDTO(user);
     }
 
+    @Cacheable(value = "userValue",key="#userName")
     public UserDto getUserProfile(String username) {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new UserNotFoundException("User with username " + username + " not found"));
         return convertToDTO(user);
     }
-
+    //@Cacheable(value = "usersValue",key="#userId")
     public List<UserDto> getAllUsers() {
         return userRepository.findAll().stream().map(this::convertToDTO).toList();
     }
-
+    @CachePut(value="userValue",key = "#user.id")
     public UserDto createUser(User user) {
 
         if(getUserProfile(user.getUsername())!=null){
@@ -54,9 +59,10 @@ public class UserService {
         return convertToDTO(userRepository.save(user));
     }
 
+    @CachePut(value="userValue",key="#userId")
     public UserDto updateUser(Integer userId, User updatedUser) {
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new UserNotFoundException("User with ID " + userId + " not found"));
+                .orElseThrow(() ->new UserNotFoundException("User with ID " + userId + " not found"));
 
         user.setFirstName(updatedUser.getFirstName());
         user.setLastName(updatedUser.getLastName());
@@ -65,8 +71,11 @@ public class UserService {
         return convertToDTO(userRepository.save(user));
     }
 
+    @CacheEvict(value="userValue",key = "#userId")
     public void deleteUser(Integer userId) {
-        userRepository.deleteById(userId);
+        if(getUserById(userId)!=null) {
+            userRepository.deleteById(userId);
+        }
     }
 
     private UserDto convertToDTO(User user) {

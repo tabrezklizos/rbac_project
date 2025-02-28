@@ -2,7 +2,9 @@ package com.klizo.RoleBasedRestApi.dto;
 
 import com.klizo.RoleBasedRestApi.model.Role;
 
-public class UserDto {
+import java.io.Serializable;
+
+public class UserDto implements Serializable {
     private Integer id;
     private String firstName;
     private String lastName;
