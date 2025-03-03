@@ -9,6 +9,7 @@ import com.klizo.RoleBasedRestApi.repository.UserRepository;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
@@ -26,6 +27,10 @@ public class UserService {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
     }
+    
+    @Autowired
+    private RedisService redisService;
+
 
    @Cacheable(value = "userValue",key="#userId")
     public UserDto getUserById(Integer userId) {
@@ -34,16 +39,40 @@ public class UserService {
         return convertToDTO(user);
     }
 
-    @Cacheable(value = "userValue",key="#userName")
     public UserDto getUserProfile(String username) {
+    	
+    	UserDto userResponse;
+
+        userResponse=redisService.get(username,UserDto.class);
+
+    	if(userResponse!=null) {
+    		return userResponse;
+    	}
+    	else {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new UserNotFoundException("User with username " + username + " not found"));
-        return convertToDTO(user);
+
+           userResponse = convertToDTO(user);
+
+        if(userResponse!=null) {
+        	redisService.set(username, userResponse, 300L);
+        }
+        
+        return userResponse;
+    	}
     }
     //@Cacheable(value = "usersValue",key="#userId")
-    public List<UserDto> getAllUsers() {
-        return userRepository.findAll().stream().map(this::convertToDTO).toList();
-    }
+    /*public List<UserDto> getAllUsers() {
+          redisService.getAll();
+
+
+        List<UserDto> listOfUsers = userRepository.findAll().stream().map(this::convertToDTO).toList();
+
+
+        return null;
+
+
+    }*/
     @CachePut(value="userValue",key = "#user.id")
     public UserDto createUser(User user) {
 
