@@ -1,9 +1,11 @@
 package com.klizo.RoleBasedRestApi.dto;
 
 import com.klizo.RoleBasedRestApi.model.Role;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 
+@NoArgsConstructor
 public class UserDto implements Serializable {
     private Integer id;
     private String firstName;
