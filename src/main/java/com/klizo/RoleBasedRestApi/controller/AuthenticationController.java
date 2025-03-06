@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.klizo.RoleBasedRestApi.model.AuthenticationResponse;
-import com.klizo.RoleBasedRestApi.model.User;
+import com.klizo.RoleBasedRestApi.model.UserEntity;
 import com.klizo.RoleBasedRestApi.service.AuthenticationService;
 
 import jakarta.validation.Valid;
@@ -22,7 +22,7 @@ public class AuthenticationController {
 
 	@PostMapping("/register")
 	public ResponseEntity<AuthenticationResponse> register(
-			@Valid @RequestBody User request
+			@Valid @RequestBody UserEntity request
 			) {
 		
 		return ResponseEntity.ok(authService.register(request));
@@ -31,7 +31,7 @@ public class AuthenticationController {
 	
 	@PostMapping("/login")
 	public ResponseEntity<AuthenticationResponse> login(
-		 @RequestBody User request
+		 @RequestBody UserEntity request
 			) {
 		
 		return ResponseEntity.ok(authService.authenticate(request));

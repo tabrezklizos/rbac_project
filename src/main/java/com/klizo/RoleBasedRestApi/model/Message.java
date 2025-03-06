@@ -21,7 +21,4 @@ public class Message {
     private String receiverId;
     private String content;
     private Date timestamp;
-
-
-
 }

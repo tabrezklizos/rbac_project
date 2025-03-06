@@ -2,12 +2,11 @@ package com.klizo.RoleBasedRestApi.repository;
 
 import java.util.Optional;
 
+import com.klizo.RoleBasedRestApi.model.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.klizo.RoleBasedRestApi.model.User;
-
-public interface UserRepository extends JpaRepository<User, Integer> {
+public interface UserRepository extends JpaRepository<UserEntity, Integer> {
 	
-	Optional<User>findByUsername(String username);
+	Optional<UserEntity>findByUsername(String username);
 
 }

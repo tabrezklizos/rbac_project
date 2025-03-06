@@ -5,7 +5,7 @@ import java.util.function.Function;
 import javax.crypto.SecretKey;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
-import com.klizo.RoleBasedRestApi.model.User;
+import com.klizo.RoleBasedRestApi.model.UserEntity;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
@@ -51,7 +51,7 @@ public class JwtService {
                 .getPayload();
     }
 
-    public String generateToken(User user) {
+    public String generateToken(UserEntity user) {
         return Jwts.builder()
                 .subject(user.getUsername())
                 .claim("role", user.getRole().name()) 

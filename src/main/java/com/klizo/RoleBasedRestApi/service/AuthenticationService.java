@@ -2,6 +2,7 @@ package com.klizo.RoleBasedRestApi.service;
 
 import java.util.Optional;
 
+import com.klizo.RoleBasedRestApi.model.UserEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -9,7 +10,6 @@ import org.springframework.stereotype.Service;
 
 import com.klizo.RoleBasedRestApi.model.AuthenticationResponse;
 import com.klizo.RoleBasedRestApi.model.Role;
-import com.klizo.RoleBasedRestApi.model.User;
 import com.klizo.RoleBasedRestApi.repository.UserRepository;
 
 @Service
@@ -30,9 +30,9 @@ public class AuthenticationService {
 	}
 
     //for new user registration
-	public AuthenticationResponse register(User request) {
-    	
-    	User user = new User();
+	public AuthenticationResponse register(UserEntity request) {
+
+		UserEntity user = new UserEntity();
     	user.setFirstName(request.getFirstName());
     	user.setLastName(request.getLastName());
     	user.setUsername(request.getUsername());
@@ -50,7 +50,7 @@ public class AuthenticationService {
 	
 	//for login
 	
-	public AuthenticationResponse authenticate(User request) {
+	public AuthenticationResponse authenticate(UserEntity request) {
 		
 		authenticationManager.authenticate(
 				new UsernamePasswordAuthenticationToken(
@@ -58,8 +58,8 @@ public class AuthenticationService {
 						request.getPassword()
 						)
 				);
-		
-		User user=repository.findByUsername(request.getUsername()).orElseThrow();
+
+		UserEntity user=repository.findByUsername(request.getUsername()).orElseThrow();
 		String token = jwtService.generateToken(user);
 		
 		return new AuthenticationResponse(token);
